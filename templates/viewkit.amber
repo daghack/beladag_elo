@@ -1,0 +1,15 @@
+!!! 5
+	html
+		head
+			import components/bootstrap
+		body
+			import components/navbar
+				+setnav(KitName)
+			div
+				a.btn.btn-default[href="/addmatch/" + KitName] Record Match
+			each $result in Players
+				div.player
+					div Player : #{$result.GameName}
+					div Number of Matches : #{$result.Matches}
+					div Rating : #{$result.Rating}
+					hr

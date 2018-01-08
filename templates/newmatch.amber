@@ -1,0 +1,20 @@
+mixin options
+	each $player in Players
+		option[value=$player.UUID] #{$player.GameName}
+!!! 5
+	html
+		head
+			import components/bootstrap
+		body
+			import components/navbar
+				+setnav(KitName)
+			form[action="/addmatch/" + KitName][method="post"]
+				select[name="winner"]
+					+options
+				select[name="loser"]
+					+options
+				span Draw :
+				input[name="draw"][type="checkbox"][value="draw"]
+				br
+				input[type="submit"][value="Submit"]
+
