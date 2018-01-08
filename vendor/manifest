@@ -2,9 +2,27 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/eknkc/amber",
+			"repository": "https://github.com/eknkc/amber",
+			"revision": "cdade1c073850f4ffc70a829e31235ea6892853b",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/gorilla/mux",
+			"repository": "https://github.com/gorilla/mux",
+			"revision": "5ab525f4fb1678e197ae59401e9050fa0b6cb5fd",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/jmoiron/sqlx",
 			"repository": "https://github.com/jmoiron/sqlx",
 			"revision": "3379e5993990b1f927fc8db926485e6f6becf2d2",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/kelseyhightower/envconfig",
+			"repository": "https://github.com/kelseyhightower/envconfig",
+			"revision": "462fda1f11d8cad3660e52737b8beefd27acfb3f",
 			"branch": "master"
 		},
 		{

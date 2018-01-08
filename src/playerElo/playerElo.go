@@ -31,6 +31,8 @@ const (
 	getAvgStr = `SELECT avg(rating) FROM (SELECT rating FROM player_elo) AS average`
 	newPlayerStr = `INSERT INTO player_elo (game_name, kit, rating) VALUES ($1, $2, $3)`
 	fetchPlayerByUUID = `SELECT * FROM player_elo WHERE uuid = $1`
+	fetchPlayersByKit = `SELECT * FROM player_elo WHERE kit = $1`
+	fetchPlayersByGameName = `SELECT * FROM player_elo WHERE game_name = $1`
 	addNewMatchStr = `UPDATE player_elo SET matches = matches+1, rating = $2 WHERE uuid = $1`
 )
 
@@ -116,6 +118,15 @@ func (elosys *PlayerRanking) RecordMatch(winner, loser uuid.UUID, draw bool) err
 	}
 	_, err = elosys.db.Exec(addNewMatchStr, lplayer.UUID, lplayer.Rating + ldelta)
 	return err
+}
+
+func (elosys *PlayerRanking) FetchByKit(kit string) ([]Player, error) {
+	toret := []Player{}
+	err := elosys.db.Select(&toret, fetchPlayersByKit, kit)
+	if err != nil {
+		return toret, err
+	}
+	return toret, nil
 }
 
 func ExpectedScore(p1, p2 float64) (float64, float64) {

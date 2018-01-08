@@ -1,15 +1,31 @@
 package main
 
 import (
-	elo "playerElo"
+	"fmt"
+	"github.com/kelseyhightower/envconfig"
 	"github.com/satori/go.uuid"
+	elo "playerElo"
 )
 
+type PostgresConf struct {
+	Username string
+	Password string
+	Host string
+	Database string
+}
+
+type Conf struct {
+	PostgresConf
+}
+
 func main() {
-	rankings, err := elo.NewPlayerRankings(
-		"postgres://postgres:mysecretpassword@localhost/player_elo?sslmode=disable",
-		1200, 24, 10,
-	)
+	var conf Conf
+	err := envconfig.Process("dag_ratings", &conf)
+	if err != nil {
+		panic(err)
+	}
+	db_url := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", conf.Username, conf.Password, conf.Host, conf.Database)
+	rankings, err := elo.NewPlayerRankings(db_url, 1200, 24, 10)
 	if err != nil {
 		panic(err)
 	}
@@ -19,4 +35,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("SUCCESS")
 }
