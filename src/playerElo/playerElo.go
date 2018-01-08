@@ -31,7 +31,7 @@ const (
 	getAvgStr = `SELECT avg(rating) FROM (SELECT rating FROM player_elo) AS average`
 	newPlayerStr = `INSERT INTO player_elo (game_name, kit, rating) VALUES ($1, $2, $3)`
 	fetchPlayerByUUID = `SELECT * FROM player_elo WHERE uuid = $1`
-	fetchPlayersByKit = `SELECT * FROM player_elo WHERE kit = $1`
+	fetchPlayersByKit = `SELECT * FROM player_elo WHERE kit = $1 ORDER BY rating DESC`
 	fetchPlayersByGameName = `SELECT * FROM player_elo WHERE game_name = $1`
 	addNewMatchStr = `UPDATE player_elo SET matches = matches+1, rating = $2 WHERE uuid = $1`
 )
