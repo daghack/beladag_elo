@@ -107,7 +107,7 @@ func (wh *WebHandler) NewMatch(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Same player entered in both fields")
 		return
 	}
-	http.Redirect(w, r, "/rank/" + kit_id, http.StatusSeeOther)
+	http.Redirect(w, r, "/elo/rank/" + kit_id, http.StatusSeeOther)
 }
 
 func (wh *WebHandler) ViewPlayer(w http.ResponseWriter, r *http.Request) {
