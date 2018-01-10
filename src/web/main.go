@@ -125,6 +125,14 @@ func (wh *WebHandler) ViewKit(w http.ResponseWriter, r *http.Request) {
 	wh.templates["viewkit"].Execute(w, &data)
 }
 
+func (wh *WebHandler) Index(w http.ResponseWriter, r *http.Request) {
+	wh.templates["index"].Execute(w, nil)
+}
+
+func (wh *WebHandler) EloIndex(w http.ResponseWriter, r *http.Request) {
+	wh.templates["elo_index"].Execute(w, nil)
+}
+
 func main() {
 	var conf Conf
 	envconfig.Process("bdr", &conf)
@@ -133,12 +141,14 @@ func main() {
 		panic(err)
 	}
 	router := mux.NewRouter()
-	router.HandleFunc("/addplayer", wh.NewPlayer).Methods("POST")
-	router.HandleFunc("/addplayer", wh.NewPlayerPage).Methods("GET")
-	router.HandleFunc("/addmatch/{kit_id}", wh.NewMatch).Methods("POST")
-	router.HandleFunc("/addmatch/{kit_id}", wh.NewMatchPage).Methods("GET")
-	router.HandleFunc("/player/{player_id}", wh.ViewPlayer).Methods("GET")
-	router.HandleFunc("/rank/{kit_id}", wh.ViewKit).Methods("GET")
+	router.HandleFunc("/", wh.Index).Methods("GET")
+	router.HandleFunc("/elo", wh.EloIndex).Methods("GET")
+	router.HandleFunc("/elo/addplayer", wh.NewPlayer).Methods("POST")
+	router.HandleFunc("/elo/addplayer", wh.NewPlayerPage).Methods("GET")
+	router.HandleFunc("/elo/addmatch/{kit_id}", wh.NewMatch).Methods("POST")
+	router.HandleFunc("/elo/addmatch/{kit_id}", wh.NewMatchPage).Methods("GET")
+	router.HandleFunc("/elo/player/{player_id}", wh.ViewPlayer).Methods("GET")
+	router.HandleFunc("/elo/rank/{kit_id}", wh.ViewKit).Methods("GET")
 	http.Handle("/", router)
 	http.ListenAndServe(":8181", nil)
 }

@@ -5,7 +5,7 @@
 		body
 			import components/navbar
 				+setnav("AddPlayer")
-			form[action="/addplayer"][method="post"]
+			form[action="/elo/addplayer"][method="post"]
 				div
 					span Game Name : 
 					input[type="text"][name="game_name"]

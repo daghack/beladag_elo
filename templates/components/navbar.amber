@@ -10,18 +10,20 @@ nav.navbar.navbar-default
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
-			a.navbar-brand[href="#"] Brand
+			a.navbar-brand[href="/"] Azure Dominion
 		div.collapse.navbar-collapse#bs-example-navbar-collapse-1
 			ul.nav.navbar-nav
+				li#Elo
+					a[href="/elo"] Elo Home
 				li#SingleBlue
-					a[href="/rank/SingleBlue"] Single Blue
+					a[href="/elo/rank/SingleBlue"] Single Blue
 				li#SwordAndBoard
-					a[href="/rank/SwordAndBoard"] Sword And Board
+					a[href="/elo/rank/SwordAndBoard"] Sword And Board
 				li#Florentine
-					a[href="/rank/Florentine"] Florentine
+					a[href="/elo/rank/Florentine"] Florentine
 				li#SingleRed
-					a[href="/rank/SingleRed"] Single Red
+					a[href="/elo/rank/SingleRed"] Single Red
 				li#AddPlayer
-					a[href="/addplayer"] Add Player
+					a[href="/elo/addplayer"] Add Player
 mixin setnav($id)
 	script $('##{$id}').addClass("active")

@@ -8,7 +8,7 @@ mixin options
 		body
 			import components/navbar
 				+setnav(KitName)
-			form[action="/addmatch/" + KitName][method="post"]
+			form[action="/elo/addmatch/" + KitName][method="post"]
 				select[name="winner"]
 					+options
 				select[name="loser"]

@@ -3,6 +3,7 @@ package playerElo
 import (
 //	"database/sql"
 	"fmt"
+	"time"
 	"math"
 	"github.com/jmoiron/sqlx"
 	"github.com/satori/go.uuid"
@@ -57,11 +58,32 @@ type PlayerRanking struct {
 
 func NewPlayerRankings(dbstring string, defaultRanking, kFactor float64, provMatches int) (*PlayerRanking, error) {
 	db, err := sqlx.Connect("postgres", dbstring)
-	if err != nil {
+	connected := false
+	for ttw := 1; ttw < 10; ttw *= 2 {
+		db, err = sqlx.Connect("postgres", dbstring)
+		if err != nil {
+			fmt.Printf("Could not connect, retrying in %d seconds.\n", ttw)
+			time.Sleep(time.Duration(ttw) * time.Second)
+		} else {
+			connected = true
+			break
+		}
+	}
+	if !connected {
 		return nil, err
 	}
-	err = db.Ping()
-	if err != nil {
+	pinged := false
+	for ttw := 1; ttw < 10; ttw *= 2 {
+		err = db.Ping()
+		if err != nil {
+			fmt.Printf("Could not ping, retrying in %d seconds.\n", ttw)
+			time.Sleep(time.Duration(ttw) * time.Second)
+		} else {
+			pinged = true
+			break
+		}
+	}
+	if !pinged {
 		return nil, err
 	}
 	_, err = db.Exec(createPgCryptoStr)
