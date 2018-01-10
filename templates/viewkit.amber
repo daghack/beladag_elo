@@ -6,7 +6,7 @@
 			import components/navbar
 				+setnav(KitName)
 			div
-				a.btn.btn-default[href="/addmatch/" + KitName] Record Match
+				a.btn.btn-default[href="/elo/addmatch/" + KitName] Record Match
 			each $result in Players
 				div.player
 					div Player : #{$result.GameName}
