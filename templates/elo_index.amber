@@ -4,4 +4,4 @@
 			import components/bootstrap
 		body
 			import components/navbar
-				+setnav(Elo)
+				+setnav("EloHome")
