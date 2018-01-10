@@ -1,9 +1,9 @@
 FROM golang:1.9 as compiler
+RUN go get github.com/constabulary/gb/...
 WORKDIR /go/src/app
 COPY vendor ./vendor
-COPY src ./src
-RUN go get github.com/constabulary/gb/...
 RUN gb vendor restore
+COPY src ./src
 RUN gb build
 
 FROM debian:latest
