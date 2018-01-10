@@ -1,0 +1,7 @@
+!!! 5
+	html
+		head
+			import components/bootstrap
+		body
+			import components/navbar
+				+setnav(Elo)
