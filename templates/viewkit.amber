@@ -5,11 +5,11 @@
 		body
 			import components/navbar
 				+setnav(KitName)
-			div
+			div.container-fluid
 				a.btn.btn-default[href="/elo/addmatch/" + KitName] Record Match
-			each $result in Players
-				div.player
-					div Player : #{$result.GameName}
-					div Number of Matches : #{$result.Matches}
-					div Rating : #{$result.Rating}
-					hr
+				each $result in Players
+					div.player
+						div Player : #{$result.GameName}
+						div Number of Matches : #{$result.Matches}
+						div Rating : #{$result.Rating}
+						hr

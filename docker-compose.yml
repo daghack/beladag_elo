@@ -9,6 +9,7 @@ services:
             - BDR_HOST=postgres
             - BDR_PASSWORD=supersecretpassword
             - BDR_DATABASE=azuredominion
+            - BDR_ELOBASEPATH=/elo
         depends_on:
             - postgres
     postgres:

@@ -13,18 +13,18 @@ div.container
 					span.icon-bar
 				a.navbar-brand[href="/"] Azure Dominion
 			div.collapse.navbar-collapse#bs-example-navbar-collapse-1
-				ul.nav.navbar-nav
+				ul.nav.navbar-nav.navbar-right
 					li#EloHome
-						a[href="/elo"] Elo Home
+						a[href=BasePath + "/"] Elo Home
 					li#SingleBlue
-						a[href="/elo/rank/SingleBlue"] Single Blue
+						a[href=BasePath + "/viewkit/SingleBlue"] Single Blue
 					li#SwordAndBoard
-						a[href="/elo/rank/SwordAndBoard"] Sword And Board
+						a[href=BasePath + "/viewkit/SwordAndBoard"] Sword And Board
 					li#Florentine
-						a[href="/elo/rank/Florentine"] Florentine
+						a[href=BasePath + "/viewkit/Florentine"] Florentine
 					li#SingleRed
-						a[href="/elo/rank/SingleRed"] Single Red
+						a[href=BasePath + "/viewkit/SingleRed"] Single Red
 					li#AddPlayer
-						a[href="/elo/addplayer"] Add Player
+						a[href=BasePath + "/addplayer"] Add Player
 mixin setnav($id)
 	script $('##{$id}').addClass("active")
