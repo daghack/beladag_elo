@@ -5,27 +5,28 @@
 		body
 			import components/navbar
 				+setnav("AddPlayer")
-			form[action="/elo/addplayer"][method="post"]
-				div
-					span Game Name : 
-					input[type="text"][name="game_name"]
-				div
-					span Realm Name : 
-					input[type="text"][name="realm_name"]
-				div
-					select
-						[name="kit_name"]
-						option
-							[value="SingleBlue"]
-							| Single Blue
-						option
-							[value="Florentine"]
-							| Florentine
-						option
-							[value="SingleRed"]
-							| Single Red
-						option
-							[value="SwordAndBoard"]
-							| Sword and Board
-				div
-					input[type="submit"][value="Submit"]
+			div.container.container-fluid
+				form[action="/elo/addplayer"][method="post"]
+					div
+						span Game Name :
+						input[type="text"][name="game_name"]
+					div
+						span Realm Name :
+						input[type="text"][name="realm_name"]
+					div
+						select
+							[name="kit_name"]
+							option
+								[value="SingleBlue"]
+								| Single Blue
+							option
+								[value="Florentine"]
+								| Florentine
+							option
+								[value="SingleRed"]
+								| Single Red
+							option
+								[value="SwordAndBoard"]
+								| Sword and Board
+					div
+						input[type="submit"][value="Submit"]
