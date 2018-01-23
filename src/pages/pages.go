@@ -243,6 +243,7 @@ func (wh *WebHandler) Serve() {
 	eloRouter := router.PathPrefix(wh.conf.EloBasePath).Subrouter()
 	eloRouter.HandleFunc("/", wh.EloIndex).Methods("GET")
 	eloRouter.HandleFunc("/addplayer", wh.AddPlayer).Methods("GET")
+	eloRouter.HandleFunc("/addplayer", wh.PostPlayer).Methods("POST")
 	eloRouter.HandleFunc("/addmatch/{kit_id}", wh.AddMatch).Methods("GET")
 	eloRouter.HandleFunc("/viewplayer/{player_id}", wh.ViewPlayer).Methods("GET")
 	eloRouter.HandleFunc("/viewkit/{kit_id}", wh.ViewKit).Methods("GET")
