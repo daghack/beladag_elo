@@ -2,11 +2,11 @@
 	html
 		head
 			import components/bootstrap
-		body
+		body.bg-dark
 			import components/navbar
 				+setnav("EloRating")
 				+setnav("AddPlayer")
-			div.container.container-fluid
+			div.container
 				form[action="/elo/addplayer"][method="post"]
 					div
 						span Game Name :

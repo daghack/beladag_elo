@@ -2,6 +2,8 @@
 	html
 		head
 			import components/bootstrap
-		body
+		body.bg-dark
 			import components/navbar
+				+setnav("EloRating")
 				+setnav("EloHome")
+			div.container

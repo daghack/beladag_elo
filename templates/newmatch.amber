@@ -5,17 +5,18 @@ mixin options
 	html
 		head
 			import components/bootstrap
-		body
+		body.bg-dark
 			import components/navbar
 				+setnav("EloRating")
 				+setnav(KitName)
-			form[action="/elo/addmatch/" + KitName][method="post"]
-				select[name="winner"]
-					+options
-				select[name="loser"]
-					+options
-				span Draw :
-				input[name="draw"][type="checkbox"][value="draw"]
-				br
-				input[type="submit"][value="Submit"]
+			div.container
+				form[action="/elo/addmatch/" + KitName][method="post"]
+					select[name="winner"]
+						+options
+					select[name="loser"]
+						+options
+					span Draw :
+					input[name="draw"][type="checkbox"][value="draw"]
+					br
+					input[type="submit"][value="Submit"]
 
