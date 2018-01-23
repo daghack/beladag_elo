@@ -7,6 +7,7 @@ RUN gb vendor restore
 RUN gb build
 
 FROM debian:latest
+RUN apt-get update && apt-get install -y ca-certificates
 RUN mkdir /app
 WORKDIR /app
 COPY --from=compiler /go/src/app/bin/web ./web

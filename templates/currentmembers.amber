@@ -1,0 +1,23 @@
+!!! 5
+	html
+		head
+			import components/bootstrap
+		body.bg-dark
+			import components/navbar
+				+setnav("CurrentMembers")
+			div.container
+				table.table.table-bordered
+					thead.thead-dark
+						tr
+							th #
+							th Game Name
+							th.hidden-sm-down Joined Date
+							th Status
+					tbody
+						each $i, $member in Members
+							tr.table-success
+								.table-warning ? $member.Status == "Inactive"
+								th #{$i + 1}
+								td #{$member.GameName}
+								td.hidden-sm-down #{$member.JoinedDate}
+								td #{$member.Status}

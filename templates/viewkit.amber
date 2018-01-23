@@ -4,6 +4,7 @@
 			import components/bootstrap
 		body
 			import components/navbar
+				+setnav("EloRating")
 				+setnav(KitName)
 			div.container-fluid
 				a.btn.btn-default[href="/elo/addmatch/" + KitName] Record Match

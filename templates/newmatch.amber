@@ -7,6 +7,7 @@ mixin options
 			import components/bootstrap
 		body
 			import components/navbar
+				+setnav("EloRating")
 				+setnav(KitName)
 			form[action="/elo/addmatch/" + KitName][method="post"]
 				select[name="winner"]

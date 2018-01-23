@@ -4,6 +4,7 @@
 			import components/bootstrap
 		body
 			import components/navbar
+				+setnav("EloRating")
 				+setnav("AddPlayer")
 			div.container.container-fluid
 				form[action="/elo/addplayer"][method="post"]
