@@ -179,7 +179,7 @@ func (wh *WebHandler) PostMatch(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Same player entered in both fields")
 		return
 	}
-	http.Redirect(w, r, "/elo/rank/" + kit_id, http.StatusSeeOther)
+	http.Redirect(w, r, "/elo/viewkit/" + kit_id, http.StatusSeeOther)
 }
 
 func (wh *WebHandler) AddPlayer(w http.ResponseWriter, r *http.Request) {
@@ -245,6 +245,7 @@ func (wh *WebHandler) Serve() {
 	eloRouter.HandleFunc("/addplayer", wh.AddPlayer).Methods("GET")
 	eloRouter.HandleFunc("/addplayer", wh.PostPlayer).Methods("POST")
 	eloRouter.HandleFunc("/addmatch/{kit_id}", wh.AddMatch).Methods("GET")
+	eloRouter.HandleFunc("/addmatch/{kit_id}", wh.PostMatch).Methods("POST")
 	eloRouter.HandleFunc("/viewplayer/{player_id}", wh.ViewPlayer).Methods("GET")
 	eloRouter.HandleFunc("/viewkit/{kit_id}", wh.ViewKit).Methods("GET")
 	http.Handle("/", router)
