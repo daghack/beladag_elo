@@ -30,4 +30,4 @@
 								[value="SwordAndBoard"]
 								| Sword and Board
 					div
-						input[type="submit"][value="Submit"]
+						input.btn.btn-primary[type="submit"][value="Submit"]

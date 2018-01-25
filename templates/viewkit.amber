@@ -7,10 +7,18 @@
 				+setnav("EloRating")
 				+setnav(KitName)
 			div.container
-				a.btn.btn-default[href="/elo/addmatch/" + KitName] Record Match
-				each $result in Players
-					div.player
-						div Player : #{$result.GameName}
-						div Number of Matches : #{$result.Matches}
-						div Rating : #{$result.Rating}
-						hr
+				table.table.table-bordered.table-striped.table-light
+					thead.thead-dark
+						tr
+							th Rank
+							th Game Name
+							th.hidden-sm-down Number of Matches
+							th Rating
+					tbody
+						each $i, $result in Players
+							tr
+								th #{$i + 1}
+								td #{$result.GameName}
+								td.hidden-sm-down #{$result.Matches}
+								td #{$result.Rating}
+				a.btn.btn-primary[href="/elo/addmatch/" + KitName] Record Match
