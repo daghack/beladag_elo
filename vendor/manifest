@@ -2,6 +2,13 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "cloud.google.com/go/compute/metadata",
+			"repository": "https://code.googlesource.com/gocloud",
+			"revision": "90bed45ceade066ca2d7c9b9954649f9822e46c6",
+			"branch": "master",
+			"path": "/compute/metadata"
+		},
+		{
 			"importpath": "github.com/eknkc/amber",
 			"repository": "https://github.com/eknkc/amber",
 			"revision": "cdade1c073850f4ffc70a829e31235ea6892853b",
@@ -36,6 +43,26 @@
 			"repository": "https://github.com/satori/go.uuid",
 			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
 			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "0ed95abb35c445290478a5348a7b38bb154135fd",
+			"branch": "master",
+			"path": "/context"
+		},
+		{
+			"importpath": "golang.org/x/oauth2",
+			"repository": "https://go.googlesource.com/oauth2",
+			"revision": "a032972e28060ca4f5644acffae3dfc268cc09db",
+			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/oauth2/google",
+			"repository": "https://go.googlesource.com/oauth2",
+			"revision": "a032972e28060ca4f5644acffae3dfc268cc09db",
+			"branch": "master",
+			"path": "/google"
 		}
 	]
 }

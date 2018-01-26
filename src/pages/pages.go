@@ -2,13 +2,17 @@ package pages
 
 import (
 	"encoding/csv"
-	"playerElo"
-	"html/template"
-	"net/http"
-	"github.com/gorilla/mux"
-	"github.com/eknkc/amber"
-	"github.com/satori/go.uuid"
+	"encoding/json"
 	"fmt"
+	"github.com/eknkc/amber"
+	"github.com/gorilla/mux"
+	"github.com/satori/go.uuid"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	"html/template"
+	"io/ioutil"
+	"net/http"
+	"playerElo"
 )
 
 const adSpreadsheetFmtStr string = "http://docs.google.com/spreadsheets/d/e/2PACX-1vShbdRxaYapPkcDxBqGJexfp0cVZHVDQ3ZZtMukOaubBcLUnYrqC8ZetZZqOj1W7ln-XyzBu_6XB8Zv/pub?output=csv&gid=%s"
@@ -48,8 +52,17 @@ type Member struct {
 type WebHandler struct {
 	conf *Conf
 	elo *playerElo.PlayerRanking
+	oauthConf *oauth2.Config
 	members []Member
 	templates map[string]*template.Template
+}
+
+type OauthCreds struct {
+	ClientSecret, ClientId string
+}
+
+func getLoginUrl(conf *oauth2.Config, state string) string {
+	return conf.AuthCodeURL(state)
 }
 
 func fetchSpreadsheet(gid string) (Spreadsheet, error) {
@@ -123,11 +136,30 @@ func NewWebHandler(conf *Conf) (*WebHandler, error) {
 	if err != nil {
 		return nil, err
 	}
+	creds := OauthCreds{}
+	credFile, err := ioutil.ReadFile("./creds.json")
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(credFile, &creds)
+	if err != nil {
+		return nil, err
+	}
+	oauthconf := &oauth2.Config {
+		ClientID : creds.ClientId,
+		ClientSecret : creds.ClientSecret,
+		RedirectURL : "http://localhost/oauth2callback",
+		Scopes: []string{
+			"https://www.googleapis.com/auth/userinfo.email",
+		},
+		Endpoint: google.Endpoint,
+	}
 	toret := &WebHandler{
 		elo : elo,
 		templates : templates,
 		conf : conf,
 		members : members,
+		oauthConf : oauthconf,
 	}
 	return toret, nil
 }
@@ -192,11 +224,26 @@ func (wh *WebHandler) PostPlayer(w http.ResponseWriter, r *http.Request) {
 	game_name := r.Form.Get("game_name")
 	realm_name := r.Form.Get("realm_name")
 	kit_name := r.Form.Get("kit_name")
-	err := wh.elo.NewPlayer(game_name + ", " + realm_name, kit_name)
-	if err != nil {
-		fmt.Fprintln(w, err)
+	gnCookie := &http.Cookie{
+		Name : "game_name",
+		Value : game_name,
+		Path : "/",
 	}
-	http.Redirect(w, r, "/elo/viewkit/" + kit_name, http.StatusSeeOther)
+	http.SetCookie(w, gnCookie)
+	rnCookie := &http.Cookie{
+		Name : "realm_name",
+		Value : realm_name,
+		Path : "/",
+	}
+	http.SetCookie(w, rnCookie)
+	knCookie := &http.Cookie{
+		Name : "kit_name",
+		Value : kit_name,
+		Path : "/",
+	}
+	http.SetCookie(w, knCookie)
+	login := getLoginUrl(wh.oauthConf, "12345678901234567890123456789012")
+	http.Redirect(w, r, login, http.StatusSeeOther)
 }
 
 func (wh *WebHandler) ViewPlayer(w http.ResponseWriter, r *http.Request) {
@@ -236,9 +283,60 @@ func (wh *WebHandler) Index(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/currentmembers", http.StatusSeeOther)
 }
 
+func (wh *WebHandler) OauthCallback(w http.ResponseWriter, r *http.Request) {
+	code := r.URL.Query()["code"][0]
+	tok, err := wh.oauthConf.Exchange(oauth2.NoContext, code)
+	if err != nil {
+		panic(err)
+	}
+	client := wh.oauthConf.Client(oauth2.NoContext, tok)
+	resp, err := client.Get("https://www.googleapis.com/oauth2/v3/userinfo")
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	data, err := ioutil.ReadAll(resp.Body)
+	email := struct{Email string `json:"email"`}{}
+	json.Unmarshal(data, &email)
+	game_name_cookie, _ := r.Cookie("game_name")
+	realm_name_cookie, _ := r.Cookie("realm_name")
+	kit_name_cookie, _ := r.Cookie("kit_name")
+	if (game_name_cookie.Value != "" && realm_name_cookie.Value != "" && kit_name_cookie.Value != "") {
+		if email.Email == "nolat301@gmail.com" {
+			game_name := game_name_cookie.Value
+			realm_name := realm_name_cookie.Value
+			kit_name := kit_name_cookie.Value
+			err := wh.elo.NewPlayer(game_name + ", " + realm_name, kit_name)
+			if err != nil {
+				fmt.Fprintln(w, err)
+			}
+		}
+	}
+	gnCookie := &http.Cookie{
+		Name : "game_name",
+		Value : "",
+		Path : "/",
+	}
+	http.SetCookie(w, gnCookie)
+	rnCookie := &http.Cookie{
+		Name : "realm_name",
+		Value : "",
+		Path : "/",
+	}
+	http.SetCookie(w, rnCookie)
+	knCookie := &http.Cookie{
+		Name : "kit_name",
+		Value : "",
+		Path : "/",
+	}
+	http.SetCookie(w, knCookie)
+	http.Redirect(w, r, wh.conf.EloBasePath + "/viewkit/" + kit_name_cookie.Value, http.StatusSeeOther)
+}
+
 func (wh *WebHandler) Serve() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", wh.Index).Methods("GET")
+	router.HandleFunc("/oauth2callback", wh.OauthCallback).Methods("GET")
 	router.HandleFunc("/currentmembers", wh.CurrentMembers).Methods("GET")
 	eloRouter := router.PathPrefix(wh.conf.EloBasePath).Subrouter()
 	eloRouter.HandleFunc("/", wh.EloIndex).Methods("GET")

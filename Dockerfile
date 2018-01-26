@@ -12,4 +12,5 @@ RUN mkdir /app
 WORKDIR /app
 COPY --from=compiler /go/src/app/bin/web ./web
 COPY templates ./templates
+COPY creds.json ./
 CMD ["./web"]
