@@ -4,12 +4,7 @@ services:
         build: .
         ports:
             - "80:8181"
-        environment:
-            - BDR_USERNAME=postgres
-            - BDR_HOST=postgres
-            - BDR_PASSWORD=supersecretpassword
-            - BDR_DATABASE=azuredominion
-            - BDR_ELOBASEPATH=/elo
+        env_file: env-file.env
         depends_on:
             - postgres
     postgres:

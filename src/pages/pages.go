@@ -18,10 +18,10 @@ import (
 const adSpreadsheetFmtStr string = "http://docs.google.com/spreadsheets/d/e/2PACX-1vShbdRxaYapPkcDxBqGJexfp0cVZHVDQ3ZZtMukOaubBcLUnYrqC8ZetZZqOj1W7ln-XyzBu_6XB8Zv/pub?output=csv&gid=%s"
 
 type PostgresConf struct {
-	Username string
-	Password string
-	Host string
-	Database string
+	PostgresUsername string
+	PostgresPassword string
+	PostgresHost string
+	PostgresDatabase string
 }
 
 type TemplateConf struct {
@@ -29,6 +29,7 @@ type TemplateConf struct {
 }
 
 type BasePathsConf struct {
+	Host string
 	EloBasePath string
 }
 
@@ -116,7 +117,7 @@ func fetchHonoraries() (Spreadsheet, error) {
 }
 
 func NewWebHandler(conf *Conf) (*WebHandler, error) {
-	dbstr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", conf.Username, conf.Password, conf.Host, conf.Database)
+	dbstr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable", conf.PostgresUsername, conf.PostgresPassword, conf.PostgresHost, conf.PostgresDatabase)
 	elo, err := playerElo.NewPlayerRankings(dbstr, 1200, 24, 10)
 	if err != nil {
 		return nil, err
@@ -148,7 +149,7 @@ func NewWebHandler(conf *Conf) (*WebHandler, error) {
 	oauthconf := &oauth2.Config {
 		ClientID : creds.ClientId,
 		ClientSecret : creds.ClientSecret,
-		RedirectURL : "http://localhost/oauth2callback",
+		RedirectURL : "http://" + conf.Host + "/oauth2callback",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email",
 		},
