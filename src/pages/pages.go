@@ -149,7 +149,7 @@ func NewWebHandler(conf *Conf) (*WebHandler, error) {
 	oauthconf := &oauth2.Config {
 		ClientID : creds.ClientId,
 		ClientSecret : creds.ClientSecret,
-		RedirectURL : "http://" + conf.Host + "/oauth2callback",
+		RedirectURL : "https://" + conf.Host + "/oauth2callback",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email",
 		},
